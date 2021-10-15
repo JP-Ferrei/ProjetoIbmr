@@ -10,9 +10,13 @@ using Microsoft.OpenApi.Models;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Text;
 using System.Threading.Tasks;
+using ClinicaDentista.Extensions;
 using Data.Context;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.IdentityModel.Tokens;
 
 namespace ClinicaDentista
 {
@@ -28,7 +32,8 @@ namespace ClinicaDentista
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
-
+            services.AddInjections();
+            services.AddJwt(Configuration);
             services.AddDbContext<ClinicaContext>(opt => opt.UseNpgsql(Configuration.GetConnectionString("conexao")));
             services.AddControllers();
             services.AddSwaggerGen(c =>
@@ -51,6 +56,7 @@ namespace ClinicaDentista
 
             app.UseRouting();
 
+            app.UseAuthentication();
             app.UseAuthorization();
 
             app.UseEndpoints(endpoints =>
