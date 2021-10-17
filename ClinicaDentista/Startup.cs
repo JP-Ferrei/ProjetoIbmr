@@ -22,9 +22,9 @@ namespace ClinicaDentista
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
-            services.AddInjections();
-            services.AddJwt(Configuration);
-            services.AddDbContext<ClinicaContext>(opt => opt.UseNpgsql(Configuration.GetConnectionString("conexao")));
+            //services.AddInjections();
+            //services.AddJwt(Configuration);
+            services.AddDbContext<ClinicaContext>();
             services.AddControllers();
             services.AddSwaggerGen(c =>
             {

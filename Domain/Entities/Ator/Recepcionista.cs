@@ -1,6 +1,4 @@
-using Domain.Entities.Ator;
-
-namespace Domain.Entities
+namespace Domain.Entities.Ator
 {
     public class Recepcionista: Usuario
     {
