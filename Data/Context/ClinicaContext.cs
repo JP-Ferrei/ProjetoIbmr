@@ -1,4 +1,5 @@
 using Domain.Entities;
+using Domain.Entities.Ator;
 using Microsoft.EntityFrameworkCore;
 
 namespace Data.Context
@@ -9,10 +10,9 @@ namespace Data.Context
         public DbSet<Usuario> Usuarios { get; set; }
         public ClinicaContext(DbContextOptions<ClinicaContext> options) : base(options)
         {
+           
         }
 
-        public ClinicaContext()
-        {
-        }
+       
     }
 }

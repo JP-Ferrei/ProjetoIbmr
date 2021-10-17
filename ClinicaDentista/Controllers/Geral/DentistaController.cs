@@ -1,7 +1,9 @@
 using System;
+using System.Collections.Generic;
 using System.Threading.Tasks;
 using Data.Context;
 using Domain.Entities;
+using Domain.Entities.Ator;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 
@@ -30,7 +32,7 @@ namespace ClinicaDentista.Controllers.Geral
                 await _context.Dentistas.AddAsync(model);
                 await _context.SaveChangesAsync();
 
-                return Created("", model);
+                return Ok();
             }
             catch (Exception e)
             {
@@ -38,5 +40,10 @@ namespace ClinicaDentista.Controllers.Geral
                 throw;
             }
         }
+
+        [HttpGet]
+        public async Task<ActionResult<List<Dentista>>> Get() =>  await _context.Dentistas.ToListAsync();
+        
+        
     }
 }
