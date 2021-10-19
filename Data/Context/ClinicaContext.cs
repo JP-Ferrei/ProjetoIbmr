@@ -17,5 +17,16 @@ namespace Data.Context
 
         protected override void OnConfiguring(DbContextOptionsBuilder opt)=> 
             opt.UseNpgsql("Host=localhost;Port=5432;Pooling=true;Database=ClinicaDentista;User Id=postgres;Password=DB@ccess;");
+
+        protected override void OnModelCreating(ModelBuilder modelBuilder)
+        {
+            modelBuilder.Entity<TipoUsuario>().HasData(TipoUsuario.ObterDados());
+
+
+            modelBuilder.Entity<Usuario>().HasIndex(x => x.Email).IsUnique();
+            modelBuilder.Entity<Dentista>().HasIndex(x => x.Email).IsUnique();
+            modelBuilder.Entity<Recepcionista>().HasIndex(x => x.Email).IsUnique();
+            modelBuilder.Entity<Cliente>().HasIndex(x => x.Email).IsUnique();
+        }
     }
 }

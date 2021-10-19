@@ -5,6 +5,8 @@ namespace Domain.Entities.Ator
 {
     public class Usuario :IEntity
     {
+        private string _senha;
+        
         public Guid Id { get; set; }
         public string Nome { get; set; }
         public string Cpf { get; set; }
@@ -14,11 +16,14 @@ namespace Domain.Entities.Ator
         public string Telefone { get; set; }
         public Endereco Endereco { get; set; }
         public DateTime DataNascimento { get; set; }
+        public TipoUsuario Tipo { get; set; }
+        public string Senha { get => null ; set => _senha = value; }
 
         public Usuario()
         {
             DataCriacao = DateTime.Now;
         }
 
+        public string GetSenha() => _senha;
     }
 }

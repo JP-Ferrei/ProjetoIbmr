@@ -12,11 +12,7 @@
     </ItemGroup>
 
     <ItemGroup>
-      <Folder Include="Interface\Geral" />
-      <Folder Include="Interface\Shared" />
       <Folder Include="Migrations" />
-      <Folder Include="Repository\Geral" />
-      <Folder Include="Repository\Shared" />
     </ItemGroup>
 
     <ItemGroup>
