@@ -1,3 +1,4 @@
+using System;
 using System.Threading.Tasks;
 using Data.Interface.Shared;
 using Domain.Interface.Shared;
@@ -15,7 +16,7 @@ namespace Service.Services.Shared
 
         }
 
-        public async virtual Task Delete(long id)
+        public async virtual Task Delete(Guid id)
         {
             await _repository.Remove(id);
 
@@ -54,7 +55,7 @@ namespace Service.Services.Shared
             await SaveChangesAsync();
         }
 
-        public async virtual Task Patch(long id, JsonPatchDocument<TEntity> model, string include)
+        public async virtual Task Patch(Guid id, JsonPatchDocument<TEntity> model, string include)
         {
             var domain = string.IsNullOrEmpty(include) ? await GetTracking(id) : await GetTracking(id, include);
         

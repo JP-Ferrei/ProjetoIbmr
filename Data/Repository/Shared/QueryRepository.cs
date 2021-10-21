@@ -1,3 +1,4 @@
+using System;
 using System.Linq;
 using System.Threading.Tasks;
 using Data.Context;
@@ -47,36 +48,36 @@ namespace Data.Repository.Shared
             return _context.Set<TEntity>();
         }
 
-        public virtual async Task<TEntity> GetByIdAsync(long id)
+        public virtual async Task<TEntity> GetByIdAsync(Guid id)
         {
             return await _query.AsNoTracking().SingleOrDefaultAsync(x => x.Id.Equals(id));
         }
 
-        public virtual async Task<TEntity> GetByIdAsync(long id, string include)
+        public virtual async Task<TEntity> GetByIdAsync(Guid id, string include)
         {
             var query = SetInclude(GetAllNoInclude(), include);
 
             return await query.AsNoTracking().SingleOrDefaultAsync(x => x.Id.Equals(id));
         }
 
-        public async Task<TEntity> GetByIdNoIncludeAsync(long id)
+        public async Task<TEntity> GetByIdNoIncludeAsync(Guid id)
         {
             return await _context.Set<TEntity>().AsNoTracking().SingleOrDefaultAsync(x => x.Id.Equals(id));
         }
 
-        public async Task<TEntity> GetByIdTrackingAsync(long id)
+        public async Task<TEntity> GetByIdTrackingAsync(Guid id)
         {
             return await _query.SingleOrDefaultAsync(x => x.Id.Equals(id));
         }
 
-        public async Task<TEntity> GetByIdTrackingAsync(long id, string include)
+        public async Task<TEntity> GetByIdTrackingAsync(Guid id, string include)
         {
             var query = SetInclude(GetAllNoInclude(), include);
 
             return await query.SingleOrDefaultAsync(x => x.Id.Equals(id));
         }
 
-        public async Task<TEntity> GetByIdTrackingNoFilterAsync(long id)
+        public async Task<TEntity> GetByIdTrackingNoFilterAsync(Guid id)
         {
             return await _query.IgnoreQueryFilters().SingleOrDefaultAsync(x => x.Id.Equals(id));
         }

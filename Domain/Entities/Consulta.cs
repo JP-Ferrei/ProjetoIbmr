@@ -12,8 +12,14 @@ namespace Domain.Entities
         public Guid ClienteId { get; set; }
         public Cliente Cliente { get; set; }
         public DateTime DataHora { get; set; }
+        public DateTime DataCriacao { get; set; }
         public double Preco { get; set; }
-        
+
+
+        public Consulta()
+        {
+            DataCriacao = DateTime.Now;
+        }
     }
 
     

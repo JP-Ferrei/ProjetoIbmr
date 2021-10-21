@@ -44,7 +44,7 @@ namespace ClinicaDentista.Controllers.Shared
         }
 
         [HttpGet("{id}")]
-        public virtual async Task<ActionResult<TEntity>> GetById(long id, [FromHeader] string include)
+        public virtual async Task<ActionResult<TEntity>> GetById(Guid id, [FromHeader] string include)
         {
             try
             {

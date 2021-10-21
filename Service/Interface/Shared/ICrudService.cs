@@ -1,3 +1,4 @@
+using System;
 using System.Threading.Tasks;
 using Domain.Interface.Shared;
 using Microsoft.AspNetCore.JsonPatch;
@@ -10,8 +11,8 @@ namespace Service.Interface.Shared
             Task Post(TEntity entity);
             Task Put(TEntity entity);
             Task Patch(TEntity entity);
-            Task Patch(long id, JsonPatchDocument<TEntity> model, string include);
-            Task Delete(long id);
+            Task Patch(Guid id, JsonPatchDocument<TEntity> model, string include);
+            Task Delete(Guid id);
             Task Delete(TEntity entity);
             Task SaveChangesAsync();
         }

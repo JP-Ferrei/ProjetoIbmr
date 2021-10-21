@@ -1,3 +1,4 @@
+using System;
 using System.Linq;
 using System.Threading.Tasks;
 using Data.Interface.Shared;
@@ -18,22 +19,22 @@ namespace Service.Services.Shared
            
         }
 
-        public virtual async Task<TEntity> Get(long id)
+        public virtual async Task<TEntity> Get(Guid id)
         {
             return await _repository.GetByIdAsync(id);
         }
 
-        public virtual async Task<TEntity> Get(long id, string include)
+        public virtual async Task<TEntity> Get(Guid id, string include)
         {
             return await _repository.GetByIdAsync(id, include);
         }
 
-        public virtual async Task<TEntity> GetTracking(long id)
+        public virtual async Task<TEntity> GetTracking(Guid id)
         {
             return await _repository.GetByIdTrackingAsync(id);
         }
 
-        public virtual async Task<TEntity> GetTracking(long id, string include)
+        public virtual async Task<TEntity> GetTracking(Guid id, string include)
         {
             return await _repository.GetByIdTrackingAsync(id, include);
         }
@@ -48,12 +49,12 @@ namespace Service.Services.Shared
             return _repository.GetAllNoInclude();
         }
 
-        public async Task<TEntity> GetNoInclude(long id)
+        public async Task<TEntity> GetNoInclude(Guid id)
         {
             return await _repository.GetByIdNoIncludeAsync(id);
         }
 
-        public async Task<TEntity> GetTrackingNoFilter(long id)
+        public async Task<TEntity> GetTrackingNoFilter(Guid id)
         {
             return await _repository.GetByIdTrackingNoFilterAsync(id);
         }

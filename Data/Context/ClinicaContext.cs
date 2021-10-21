@@ -14,6 +14,8 @@ namespace Data.Context
         public DbSet<Prontuario> Prontuarios { get; set; }
         public DbSet<Consulta> Consultas { get; set; }
         public DbSet<Recepcionista> Recepcionistas { get; set; }
+        public DbSet<Armazem> Armazems { get; set; }
+        public DbSet<Produto> Produtos { get; set; }
 
         protected override void OnConfiguring(DbContextOptionsBuilder opt)=> 
             opt.UseNpgsql("Host=localhost;Port=5432;Pooling=true;Database=ClinicaDentista;User Id=postgres;Password=DB@ccess;");
@@ -27,6 +29,7 @@ namespace Data.Context
             modelBuilder.Entity<Dentista>().HasIndex(x => x.Email).IsUnique();
             modelBuilder.Entity<Recepcionista>().HasIndex(x => x.Email).IsUnique();
             modelBuilder.Entity<Cliente>().HasIndex(x => x.Email).IsUnique();
+            modelBuilder.Entity<Dentista>().HasIndex(x => x.Cro).IsUnique();
         }
     }
 }

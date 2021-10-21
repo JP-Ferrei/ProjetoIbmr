@@ -1,3 +1,4 @@
+using System;
 using System.Threading.Tasks;
 using Data.Context;
 using Data.Interface.Shared;
@@ -25,7 +26,7 @@ namespace Data.Repository.Shared
             await _context.AddAsync(entity);
         }
 
-        public async Task Remove(long id)
+        public async Task Remove(Guid id)
         {
             var entity = await GetByIdNoIncludeAsync(id);
 

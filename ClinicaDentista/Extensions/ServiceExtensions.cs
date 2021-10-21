@@ -1,13 +1,21 @@
 using System;
 using System.Text;
 using Data.Interface.Geral;
+using Data.Interface.Geral.Ator;
+using Data.Interface.Geral.Prontuario;
 using Data.Repository.Geral;
+using Data.Repository.Geral.Ator;
+using Data.Repository.Geral.Prontuario;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.IdentityModel.Tokens;
 using Service.Interface.Geral;
+using Service.Interface.Geral.Ator;
+using Service.Interface.Geral.Prontuario;
 using Service.Services.Geral;
+using Service.Services.Geral.Ator;
+using Service.Services.Geral.Prontuario;
 
 namespace ClinicaDentista.Extensions
 {
@@ -16,9 +24,28 @@ namespace ClinicaDentista.Extensions
 
         public static void AddInjections(this IServiceCollection services)
         {
-
+            
             services.AddTransient<IUsuarioRepository, UsuarioRepository>();
             services.AddTransient<IUsuarioService, UsuarioService>();
+            
+            services.AddTransient<IDocumentoRepository, DocumentoRepository>();
+            services.AddTransient<IDocumentoService, DocumentoService>();
+            
+            services.AddTransient<IProntuarioRepository, ProntuarioRepository>();
+            services.AddTransient<IProntuarioService, ProntuarioService>();
+            
+            services.AddTransient<IConsultaRepository, ConsultaRepository>();
+            services.AddTransient<IConsultaService, ConsultaService>();
+            
+            services.AddTransient<IEnderecoRepository, EnderecoRepository>();
+            services.AddTransient<IEnderecoService, EnderecoService>();
+            
+            services.AddTransient<IProdutoRepository, ProdutoRepository>();
+            services.AddTransient<IProdutoService, ProdutoService>();
+            
+            services.AddTransient<IArmazemRepository, ArmazemRepository>();
+            services.AddTransient<IArmazemService, ArmazemService>();
+
         }
 
         public static void AddJwt(this IServiceCollection services, IConfiguration configuration)

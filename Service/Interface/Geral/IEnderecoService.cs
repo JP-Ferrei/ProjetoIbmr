@@ -1,9 +1,9 @@
-using Domain.Entities.Ator;
+using Domain.Entities;
 using Service.Interface.Shared;
 
 namespace Service.Interface.Geral
 {
-    public interface IUsuarioService: ICrudService<Usuario>
+    public interface IEnderecoService: ICrudService<Endereco>
     {
         
     }

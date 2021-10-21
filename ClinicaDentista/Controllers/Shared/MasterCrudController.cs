@@ -44,7 +44,7 @@ namespace ClinicaDentista.Controllers.Shared
         }
 
         [HttpPatch("{id}")]
-        public virtual async Task<IActionResult> Patch(long id, [FromBody] JsonPatchDocument<TEntity> model)
+        public virtual async Task<IActionResult> Patch(Guid id, [FromBody] JsonPatchDocument<TEntity> model)
         {
             try
             {
@@ -72,7 +72,7 @@ namespace ClinicaDentista.Controllers.Shared
         }
 
         [HttpDelete("{id}")]
-        public virtual async Task<IActionResult> Delete(long id)
+        public virtual async Task<IActionResult> Delete(Guid id)
         {
             try
             {
