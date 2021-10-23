@@ -28,7 +28,6 @@ namespace ClinicaDentista
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddInjections();
-            services.AddJwt(Configuration);
             services.AddDbContext<ClinicaContext>();
 
             services.AddOData();
@@ -39,7 +38,8 @@ namespace ClinicaDentista
                 opt.UseCamelCasing(true);
             });
             
-            
+            services.AddJwt(Configuration);
+
             services.AddSwaggerGen(c =>
             {
                 c.SwaggerDoc("v1", new OpenApiInfo { Title = "ClinicaDentista", Version = "v1" });

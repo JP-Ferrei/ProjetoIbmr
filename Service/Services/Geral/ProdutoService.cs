@@ -11,5 +11,6 @@ namespace Service.Services.Geral
         public ProdutoService(IProdutoRepository repository) : base(repository)
         {
         }
+        
     }
 }

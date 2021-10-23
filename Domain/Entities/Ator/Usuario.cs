@@ -14,16 +14,27 @@ namespace Domain.Entities.Ator
         public Boolean Ativo { get; set; }
         public string Email { get; set; }
         public string Telefone { get; set; }
-        public Endereco Endereco { get; set; }
+        
+        public Guid? EnderecoId { get; set; }
+        public Endereco? Endereco { get; set; }
+        
         public DateTime DataNascimento { get; set; }
-        public TipoUsuario Tipo { get; set; }
-        public string Senha { get => null ; set => _senha = value; }
+        
+        public int? TipoId { get; set; }
+        public TipoUsuario? Tipo { get; set; }
+        
+        public string Senha { get => _senha; set => _senha = value; }
 
         public Usuario()
         {
             DataCriacao = DateTime.Now;
         }
 
-        public string GetSenha() => _senha;
+
+        public string GetSenha()
+        {
+            return _senha;
+        }
+       
     }
 }

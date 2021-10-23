@@ -25,7 +25,7 @@ namespace Service.Services.Geral.Ator
         }
         
         
-        public string GenerateToken(Usuario usuario, string jwtKey, double jwtExpireMinutes, string jwtIssuer, string role)
+        public string GenerateToken(Usuario usuario, string jwtKey, double jwtExpireMinutes)
         {
             var tokenHandler = new JwtSecurityTokenHandler();
             var key = Encoding.ASCII.GetBytes(jwtKey);
@@ -37,9 +37,11 @@ namespace Service.Services.Geral.Ator
             {
                 Subject = new ClaimsIdentity(new []
                 {
+                    new Claim(ClaimTypes.Upn, usuario.Id.ToString()),
                     new Claim(ClaimTypes.Name, usuario.Nome),
                     new Claim(ClaimTypes.Email, usuario.Email),
                     new Claim(ClaimTypes.Role, usuario.Tipo.Role),
+                    new Claim("tipoId", usuario.TipoId.ToString()),
                    
                 }),
                 Expires = DateTime.UtcNow.AddHours(8),
@@ -50,29 +52,27 @@ namespace Service.Services.Geral.Ator
             return tokenHandler.WriteToken(token);
         }
 
-        public async Task<string> Login(LoginModel model, string senha ,string jwtKey, double jwtExpireMinutes, string jwtIssuer,
-            string role)
-        {
-            var user = await _repository.GetByIdAsync(model.UsuarioId);
+        public async Task<string> Login(string email, string senha ,string jwtKey, double jwtExpireMinutes)
+        { 
+            var user = await _repository.Login(email);
             
             if( user == null )
-            {
                 throw new BadRequestException("Usuário não cadastrado no sistema");
-            }
+            
             var hasher = new PasswordHasher<Usuario>();
             if( hasher.VerifyHashedPassword(user, user?.GetSenha() ?? "", senha ) == PasswordVerificationResult.Failed )
                 throw new BadRequestException("Login e/ou senha incorretos");
 
-            return GenerateToken(user, jwtKey,jwtExpireMinutes, jwtIssuer, role);
+            return GenerateToken(user, jwtKey,jwtExpireMinutes);
 
         }
 
-        private Usuario GerarSenha(Usuario usuario)
+        public void GerarSenha(Usuario usuario)
         {
             var hasher = new PasswordHasher<Usuario>();
             usuario.Senha = hasher.HashPassword(usuario, usuario.GetSenha());
 
-            return usuario;
+            
         }
 
         private bool VerificaSenha(Usuario usuario, string senha)
@@ -83,24 +83,26 @@ namespace Service.Services.Geral.Ator
         }
 
 
-        public override async Task Post(Usuario usuario)
+        public override async Task<Usuario> Post(Usuario usuario)
         {
-            if( string.IsNullOrEmpty(usuario.GetSenha()) )
-                throw new BadRequestException("Informe uma senha válida!");
-            
-            if( LoginExistente(usuario) )
-            {
-                throw new BadRequestException("Já existe um usuário utilizando esse login");
-            }
-            else
-            {
-                usuario = GerarSenha(usuario);
-
-                await base.Post(usuario);
-            }
+            // if( string.IsNullOrEmpty(usuario.GetSenha()) )
+            //     throw new BadRequestException("Informe uma senha válida!");
+            //
+            // if( LoginExistente(usuario) )
+            // {
+            //     throw new BadRequestException("Já existe um usuário utilizando esse login");
+            // }
+            //
+            // var user = GerarSenha(usuario);
+            //
+            // await base.Post(user);
+            // await _repository.SaveChangesAsync();
+            //
+            // return user;
+            return usuario;
         }
 
-        private bool LoginExistente(Usuario usuario)
+        public bool LoginExistente(Usuario usuario)
         {
             return Get().Any(x => x.Email == usuario.Email);
         }

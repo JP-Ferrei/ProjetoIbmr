@@ -4,6 +4,7 @@ using ClinicaDentista.Controllers.Shared;
 using Domain.Model;
 using Framework.Exceptions;
 using Framework.Helpers;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Service.Interface.Geral.Ator;
@@ -22,13 +23,15 @@ namespace ClinicaDentista.Controllers
             _service = service;
         }
 
+        
         [HttpPost("usuario")]
-        public async Task<ActionResult<string>> Login([FromBody] LoginModel model, string senha)
+        [AllowAnonymous]
+        public async Task<ActionResult<string>> Login([FromBody] LoginModel model)
         {
             try
             {
-                var response = await _service.Login(model, senha, _configuration["JwtKey"],
-                    double.Parse(_configuration["JwtExpireMinutes"]), _configuration["JwtIssuer"], model.Tipo);
+                var response = await _service.Login(model.Email, model.Senha, _configuration["JwtKey"],
+                    double.Parse(_configuration["JwtExpireMinutes"]));
 
                 return Ok(response);
 
@@ -42,7 +45,6 @@ namespace ClinicaDentista.Controllers
                 return StatusCode(StatusCodes.Status500InternalServerError,
                     $"{MensagemHelper.AlgumErroOcorreu} {e.Message} - {e.InnerException?.Message}");
             }
-
         }
 
     }

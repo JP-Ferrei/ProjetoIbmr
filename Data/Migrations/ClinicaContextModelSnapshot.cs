@@ -131,6 +131,9 @@ namespace Data.Migrations
 
                     b.HasKey("Id");
 
+                    b.HasIndex("Cpf")
+                        .IsUnique();
+
                     b.HasIndex("Email")
                         .IsUnique();
 
@@ -205,10 +208,7 @@ namespace Data.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("uuid");
 
-                    b.Property<Guid>("ArmazemId")
-                        .HasColumnType("uuid");
-
-                    b.Property<Guid>("ArmmazemId")
+                    b.Property<Guid?>("ArmazemId")
                         .HasColumnType("uuid");
 
                     b.Property<DateTime>("DataDeAdicao")
@@ -403,13 +403,9 @@ namespace Data.Migrations
 
             modelBuilder.Entity("Domain.Entities.Produto", b =>
                 {
-                    b.HasOne("Domain.Entities.Armazem", "Armazem")
+                    b.HasOne("Domain.Entities.Armazem", null)
                         .WithMany("Produtos")
-                        .HasForeignKey("ArmazemId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("Armazem");
+                        .HasForeignKey("ArmazemId");
                 });
 
             modelBuilder.Entity("Domain.Entities.Prontuario.Documento", b =>

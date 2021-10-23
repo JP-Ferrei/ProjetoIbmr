@@ -1,35 +1,35 @@
 using System;
 using System.Threading.Tasks;
 using ClinicaDentista.Controllers.Shared;
-using Domain.Entities;
+using Domain.Entities.Ator;
 using Framework.Exceptions;
 using Framework.Helpers;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
-using Service.Interface.Geral;
+using Service.Interface.Geral.Ator;
 using Service.Interface.Shared;
 
-namespace ClinicaDentista.Controllers.Geral
+namespace ClinicaDentista.Controllers.Geral.Ator
 {
-    [Authorize(Roles = "Recepcinista")]
-    public class ArmazemController: MasterCrudController<Armazem>
+    public class DentistaController: MasterCrudController<Dentista>
     {
-        private readonly IArmazemService _service;
-        
-        public ArmazemController(ILogger<MasterCrudController<Armazem>> logger, IArmazemService service, string includePatch = "") : base(logger, service, includePatch)
+        private readonly IDentistaService _service;
+        public DentistaController(ILogger<MasterCrudController<Dentista>> logger, IDentistaService service, string includePatch = "") : base(logger, service, includePatch)
         {
             _service = service;
         }
-         
-        [HttpPost("{armazemId}/AdicionarProduto/{produtoId}")]
-        public async Task<IActionResult> AdicionarProduto(Guid armazemid, Guid produtoId)
+
+        [HttpPost]
+        [AllowAnonymous]
+        public override async Task<ActionResult<Dentista>> Post(Dentista model)
         {
             try
             {
-                _service.AdicionarProduto(armazemid, produtoId);
-                return NoContent();
+                await _service.Post(model);
+                model.Senha = "";
+                return Created(string.Empty, model);
             }
             catch (NotFoundException e)
             {
@@ -38,7 +38,7 @@ namespace ClinicaDentista.Controllers.Geral
             catch (Exception e)
             {
                 _logger.LogError("{0} - {1}", e.Message, e.InnerException?.Message);
-         
+
                 return StatusCode(StatusCodes.Status500InternalServerError,
                     $"{MensagemHelper.AlgumErroOcorreu} {e.Message} - {e.InnerException?.Message}");
             }

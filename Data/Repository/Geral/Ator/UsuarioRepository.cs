@@ -1,8 +1,10 @@
+using System.Threading.Tasks;
 using Data.Context;
 using Data.Interface.Geral;
 using Data.Interface.Geral.Ator;
 using Data.Repository.Shared;
 using Domain.Entities.Ator;
+using Microsoft.EntityFrameworkCore;
 
 namespace Data.Repository.Geral.Ator
 {
@@ -10,6 +12,17 @@ namespace Data.Repository.Geral.Ator
     {
         public UsuarioRepository(ClinicaContext context) : base(context)
         {
+        }
+        
+        
+        public async Task<Usuario> Login(string email)
+        {
+            var usuario = await _context.Usuarios
+                .IgnoreQueryFilters()
+                .Include(x => x.Tipo)
+                .SingleOrDefaultAsync(x => x.Email.ToUpper().Trim() == email.ToUpper().Trim());
+
+            return usuario;
         }
     }
 }

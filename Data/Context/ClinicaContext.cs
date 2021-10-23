@@ -26,9 +26,7 @@ namespace Data.Context
 
 
             modelBuilder.Entity<Usuario>().HasIndex(x => x.Email).IsUnique();
-            modelBuilder.Entity<Dentista>().HasIndex(x => x.Email).IsUnique();
-            modelBuilder.Entity<Recepcionista>().HasIndex(x => x.Email).IsUnique();
-            modelBuilder.Entity<Cliente>().HasIndex(x => x.Email).IsUnique();
+            modelBuilder.Entity<Usuario>().HasIndex(x => x.Cpf).IsUnique();
             modelBuilder.Entity<Dentista>().HasIndex(x => x.Cro).IsUnique();
         }
     }

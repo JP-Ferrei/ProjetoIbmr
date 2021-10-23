@@ -7,9 +7,12 @@ namespace Service.Interface.Geral.Ator
 {
     public interface IUsuarioService: ICrudService<Usuario>
     {
-        string GenerateToken(Usuario usuario, string jwtKey, double jwtExpireMinutes, string jwtIssuer, string role);
+        string GenerateToken(Usuario usuario, string jwtKey, double jwtExpireMinutes);
 
-        Task<string> Login(LoginModel model,string senha, string jwtKey, double jwtExpireMinutes, string jwtIssuer,
-            string role);
+        Task<string> Login(string email, string senha, string jwtKey, double jwtExpireMinutes);
+
+        new Task<Usuario> Post(Usuario usuario);
+        bool LoginExistente(Usuario usuario);
+        void GerarSenha(Usuario usuario);
     }
 }

@@ -11,8 +11,7 @@ namespace Domain.Entities
         public int Quantidade { get; set; }
         public DateTime Validade { get; set; }
         public string Descricao { get; set; }
-        public Guid ArmmazemId { get; set; }
-        public Armazem Armazem { get; set; }
+       
         
         public DateTime DataDeAdicao { get; set; }
 

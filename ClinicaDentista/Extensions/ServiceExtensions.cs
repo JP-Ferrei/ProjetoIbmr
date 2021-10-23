@@ -1,5 +1,6 @@
 using System;
 using System.Text;
+using System.Threading.Tasks;
 using Data.Interface.Geral;
 using Data.Interface.Geral.Ator;
 using Data.Interface.Geral.Prontuario;
@@ -45,6 +46,12 @@ namespace ClinicaDentista.Extensions
             
             services.AddTransient<IArmazemRepository, ArmazemRepository>();
             services.AddTransient<IArmazemService, ArmazemService>();
+            
+            services.AddTransient<IRecepcionistaRepository, RecepcionistaRepository>();
+            services.AddTransient<IRecepcionistaService, RecepcionistaService>();
+            
+            services.AddTransient<IDentistaRepository, DentistaRepository>();
+            services.AddTransient<IDentistaService, DentistaService>();
 
         }
 
@@ -55,6 +62,7 @@ namespace ClinicaDentista.Extensions
             {
                 x.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
                 x.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
+                
             }).AddJwtBearer(x =>
             {
                 x.RequireHttpsMetadata = false;
@@ -63,8 +71,8 @@ namespace ClinicaDentista.Extensions
                 {
                     ValidateIssuerSigningKey = true,
                     IssuerSigningKey = new SymmetricSecurityKey(Encoding.ASCII.GetBytes(configuration["JwtKey"])),
-                    ValidIssuer = configuration["JwtIssuer"],
-                    ValidAudience = configuration["JwtIssuer"],
+                    ValidateIssuer = false,
+                    ValidateAudience = false,
                 };
             });
         }

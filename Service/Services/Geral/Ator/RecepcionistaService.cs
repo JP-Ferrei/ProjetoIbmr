@@ -2,21 +2,21 @@ using System.Threading.Tasks;
 using Data.Interface.Geral.Ator;
 using Domain.Entities.Ator;
 using Framework.Exceptions;
-using Framework.Helpers;
 using Service.Interface.Geral.Ator;
 using Service.Services.Shared;
 
 namespace Service.Services.Geral.Ator
 {
-    public class DentistaService:CrudService<Dentista, IDentistaRepository>, IDentistaService
+    public class RecepcionistaService: CrudService<Recepcionista, IRecepcionistaRepository>,IRecepcionistaService
     {
         private readonly IUsuarioService _usuarioService;
-        public DentistaService(IDentistaRepository repository, IUsuarioService service) : base(repository)
+
+        public RecepcionistaService(IRecepcionistaRepository repository, IUsuarioService usuarioService) : base(repository)
         {
-            _usuarioService = service;
+            _usuarioService = usuarioService;
         }
 
-        public override async Task Post(Dentista model)
+        public override async Task Post(Recepcionista model)
         {
             using (var transaction = _repository.BeginTransaction())
             {
@@ -35,11 +35,12 @@ namespace Service.Services.Geral.Ator
 
                 var user = await _usuarioService.GetTracking(model.Id);
 
-                user.TipoId = 2;
+                user.TipoId = 4;
 
                 await _repository.SaveChangesAsync();
                 transaction.Commit();
             }
+
         }
     }
 }
