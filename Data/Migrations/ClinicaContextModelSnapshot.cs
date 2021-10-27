@@ -28,6 +28,12 @@ namespace Data.Migrations
                     b.HasKey("Id");
 
                     b.ToTable("Armazems");
+
+                    b.HasData(
+                        new
+                        {
+                            Id = new Guid("de42b1d6-432e-4115-b1dd-2a8dbdd6f83f")
+                        });
                 });
 
             modelBuilder.Entity("Domain.Entities.Ator.TipoUsuario", b =>
@@ -135,6 +141,21 @@ namespace Data.Migrations
                     b.ToTable("Usuarios");
 
                     b.HasDiscriminator<string>("Discriminator").HasValue("Usuario");
+
+                    b.HasData(
+                        new
+                        {
+                            Id = new Guid("baf6a601-e8a8-4ef0-9c24-054fffb6e905"),
+                            Ativo = true,
+                            Cpf = "111.111.111-12",
+                            DataCriacao = new DateTime(2021, 10, 27, 20, 31, 28, 800, DateTimeKind.Local).AddTicks(3286),
+                            DataNascimento = new DateTime(2021, 10, 27, 20, 31, 28, 801, DateTimeKind.Local).AddTicks(6382),
+                            Email = "Admin@admin.com",
+                            Nome = "Admin",
+                            Senha = "Admin",
+                            Telefone = "12121231231",
+                            TipoId = 4
+                        });
                 });
 
             modelBuilder.Entity("Domain.Entities.Consulta", b =>
@@ -313,18 +334,8 @@ namespace Data.Migrations
                 {
                     b.HasBaseType("Domain.Entities.Ator.Usuario");
 
-                    b.Property<Guid?>("ProntuarioId")
-                        .HasColumnType("uuid");
-
-                    b.Property<Guid?>("ReponsavelId")
-                        .HasColumnType("uuid");
-
                     b.Property<Guid?>("ResponsavelId")
                         .HasColumnType("uuid");
-
-                    b.HasIndex("ProntuarioId");
-
-                    b.HasIndex("ReponsavelId");
 
                     b.HasDiscriminator().HasValue("Cliente");
                 });
@@ -414,21 +425,6 @@ namespace Data.Migrations
                     b.HasOne("Domain.Entities.Prontuario.Prontuario", null)
                         .WithMany("PerguntasString")
                         .HasForeignKey("ProntuarioId");
-                });
-
-            modelBuilder.Entity("Domain.Entities.Ator.Cliente", b =>
-                {
-                    b.HasOne("Domain.Entities.Prontuario.Prontuario", "Prontuario")
-                        .WithMany()
-                        .HasForeignKey("ProntuarioId");
-
-                    b.HasOne("Domain.Entities.Ator.Cliente", "Reponsavel")
-                        .WithMany()
-                        .HasForeignKey("ReponsavelId");
-
-                    b.Navigation("Prontuario");
-
-                    b.Navigation("Reponsavel");
                 });
 
             modelBuilder.Entity("Domain.Entities.Armazem", b =>
