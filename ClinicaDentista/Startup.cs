@@ -57,6 +57,8 @@ namespace ClinicaDentista
                     formatter.SupportedMediaTypes.Add(new MediaTypeHeaderValue("application/prs.mock-odata"));
                 }
             });
+            
+            
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -72,11 +74,16 @@ namespace ClinicaDentista
             
             app.UseHttpsRedirection();
 
-            app.UseRouting();
-
+            app.UseRouting();   
             app.UseAuthentication();
             app.UseAuthorization();
 
+            app.UseCors(builder =>
+            {
+                builder.AllowAnyOrigin();
+                builder.AllowAnyHeader();
+                builder.AllowAnyMethod();
+            });
             app.UseEndpoints(endpoints =>
             {
                 endpoints.Select().Filter().OrderBy().Count().MaxTop(null);

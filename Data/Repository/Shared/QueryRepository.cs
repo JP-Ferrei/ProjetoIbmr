@@ -4,6 +4,7 @@ using System.Threading.Tasks;
 using Data.Context;
 using Data.Interface.Shared;
 using Domain.Interface.Shared;
+using Domain.Model;
 using Microsoft.EntityFrameworkCore;
 
 namespace Data.Repository.Shared
@@ -13,14 +14,14 @@ namespace Data.Repository.Shared
         protected readonly ClinicaContext _context;
         protected IQueryable<TEntity> _query;
 
-     
+        public SessionAppModel SessionApp { get; }
 
         public QueryRepository(ClinicaContext context)
         {
             _context = context;
             _query = _context.Set<TEntity>();
 
-           
+            SessionApp = context.SessionApp;
         }
 
         protected IQueryable<TEntity> SetInclude(IQueryable<TEntity> query, string include)

@@ -3,6 +3,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using Data.Interface.Shared;
 using Domain.Interface.Shared;
+using Domain.Model;
 using Service.Interface.Shared;
 
 namespace Service.Services.Shared
@@ -11,12 +12,12 @@ namespace Service.Services.Shared
     {
         protected readonly TQueryRepository _repository;
 
-        
+        public SessionAppModel SessionApp { get; }
 
         public QueryService(TQueryRepository repository)
         {
             _repository = repository;
-           
+            SessionApp = repository.SessionApp;
         }
 
         public virtual async Task<TEntity> Get(Guid id)

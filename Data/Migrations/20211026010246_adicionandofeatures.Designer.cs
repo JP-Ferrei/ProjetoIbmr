@@ -10,8 +10,8 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace Data.Migrations
 {
     [DbContext(typeof(ClinicaContext))]
-    [Migration("20211017003435_AdicionandoEntidades")]
-    partial class AdicionandoEntidades
+    [Migration("20211026010246_adicionandofeatures")]
+    partial class adicionandofeatures
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -20,6 +20,62 @@ namespace Data.Migrations
                 .HasAnnotation("Relational:MaxIdentifierLength", 63)
                 .HasAnnotation("ProductVersion", "5.0.11")
                 .HasAnnotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn);
+
+            modelBuilder.Entity("Domain.Entities.Armazem", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uuid");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("Armazems");
+                });
+
+            modelBuilder.Entity("Domain.Entities.Ator.TipoUsuario", b =>
+                {
+                    b.Property<int>("Id")
+                        .HasColumnType("integer");
+
+                    b.Property<string>("Nome")
+                        .IsRequired()
+                        .HasMaxLength(60)
+                        .HasColumnType("character varying(60)");
+
+                    b.Property<string>("Role")
+                        .IsRequired()
+                        .HasColumnType("text");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("TipoUsuario");
+
+                    b.HasData(
+                        new
+                        {
+                            Id = 1,
+                            Nome = "Administrativo",
+                            Role = "Admin"
+                        },
+                        new
+                        {
+                            Id = 2,
+                            Nome = "Dentista",
+                            Role = "Dentista"
+                        },
+                        new
+                        {
+                            Id = 3,
+                            Nome = "Cliente",
+                            Role = "Cliente"
+                        },
+                        new
+                        {
+                            Id = 4,
+                            Nome = "Recepcionista",
+                            Role = "Recepcionista"
+                        });
+                });
 
             modelBuilder.Entity("Domain.Entities.Ator.Usuario", b =>
                 {
@@ -55,13 +111,28 @@ namespace Data.Migrations
                         .IsRequired()
                         .HasColumnType("text");
 
+                    b.Property<string>("Senha")
+                        .IsRequired()
+                        .HasColumnType("text");
+
                     b.Property<string>("Telefone")
                         .IsRequired()
                         .HasColumnType("text");
 
+                    b.Property<int?>("TipoId")
+                        .HasColumnType("integer");
+
                     b.HasKey("Id");
 
+                    b.HasIndex("Cpf")
+                        .IsUnique();
+
+                    b.HasIndex("Email")
+                        .IsUnique();
+
                     b.HasIndex("EnderecoId");
+
+                    b.HasIndex("TipoId");
 
                     b.ToTable("Usuarios");
 
@@ -77,14 +148,14 @@ namespace Data.Migrations
                     b.Property<Guid>("ClienteId")
                         .HasColumnType("uuid");
 
+                    b.Property<DateTime>("DataCriacao")
+                        .HasColumnType("timestamp without time zone");
+
                     b.Property<DateTime>("DataHora")
                         .HasColumnType("timestamp without time zone");
 
                     b.Property<Guid>("DentistaId")
                         .HasColumnType("uuid");
-
-                    b.Property<double>("Preco")
-                        .HasColumnType("double precision");
 
                     b.HasKey("Id");
 
@@ -119,6 +190,45 @@ namespace Data.Migrations
                     b.HasKey("Id");
 
                     b.ToTable("Endereco");
+                });
+
+            modelBuilder.Entity("Domain.Entities.Produto", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uuid");
+
+                    b.Property<Guid>("ArmazemId")
+                        .HasColumnType("uuid");
+
+                    b.Property<DateTime>("DataDeAdicao")
+                        .HasColumnType("timestamp without time zone");
+
+                    b.Property<string>("Descricao")
+                        .IsRequired()
+                        .HasColumnType("text");
+
+                    b.Property<string>("Nome")
+                        .IsRequired()
+                        .HasColumnType("text");
+
+                    b.Property<int>("Quantidade")
+                        .HasColumnType("integer");
+
+                    b.Property<DateTime>("Validade")
+                        .HasColumnType("timestamp without time zone");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("ArmazemId");
+
+                    b.HasIndex("Id")
+                        .IsUnique();
+
+                    b.HasIndex("Nome")
+                        .IsUnique();
+
+                    b.ToTable("Produtos");
                 });
 
             modelBuilder.Entity("Domain.Entities.Prontuario.Documento", b =>
@@ -229,16 +339,15 @@ namespace Data.Migrations
                         .IsRequired()
                         .HasColumnType("text");
 
+                    b.HasIndex("Cro")
+                        .IsUnique();
+
                     b.HasDiscriminator().HasValue("Dentista");
                 });
 
             modelBuilder.Entity("Domain.Entities.Ator.Recepcionista", b =>
                 {
                     b.HasBaseType("Domain.Entities.Ator.Usuario");
-
-                    b.Property<string>("Senha")
-                        .IsRequired()
-                        .HasColumnType("text");
 
                     b.HasDiscriminator().HasValue("Recepcionista");
                 });
@@ -249,7 +358,13 @@ namespace Data.Migrations
                         .WithMany()
                         .HasForeignKey("EnderecoId");
 
+                    b.HasOne("Domain.Entities.Ator.TipoUsuario", "Tipo")
+                        .WithMany()
+                        .HasForeignKey("TipoId");
+
                     b.Navigation("Endereco");
+
+                    b.Navigation("Tipo");
                 });
 
             modelBuilder.Entity("Domain.Entities.Consulta", b =>
@@ -269,6 +384,17 @@ namespace Data.Migrations
                     b.Navigation("Cliente");
 
                     b.Navigation("Dentista");
+                });
+
+            modelBuilder.Entity("Domain.Entities.Produto", b =>
+                {
+                    b.HasOne("Domain.Entities.Armazem", "Armazem")
+                        .WithMany("Produtos")
+                        .HasForeignKey("ArmazemId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Armazem");
                 });
 
             modelBuilder.Entity("Domain.Entities.Prontuario.Documento", b =>
@@ -305,6 +431,11 @@ namespace Data.Migrations
                     b.Navigation("Prontuario");
 
                     b.Navigation("Reponsavel");
+                });
+
+            modelBuilder.Entity("Domain.Entities.Armazem", b =>
+                {
+                    b.Navigation("Produtos");
                 });
 
             modelBuilder.Entity("Domain.Entities.Prontuario.Prontuario", b =>

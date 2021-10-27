@@ -24,5 +24,10 @@ namespace Data.Repository.Geral.Ator
 
             return usuario;
         }
+
+        public async Task<Usuario> BuscarPorEmail(string email)
+        {
+            return await _query.FirstOrDefaultAsync(x => x.Email == email);
+        }
     }
 }

@@ -7,5 +7,6 @@ namespace Data.Interface.Geral.Ator
     public interface IUsuarioRepository: ICrudRepository<Usuario>
     {
         Task<Usuario> Login(string email);
+        Task<Usuario> BuscarPorEmail(string email);
     }
 }

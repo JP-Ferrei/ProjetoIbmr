@@ -52,7 +52,7 @@ namespace Service.Services.Geral.Ator
             return tokenHandler.WriteToken(token);
         }
 
-        public async Task<string> Login(string email, string senha ,string jwtKey, double jwtExpireMinutes)
+        public async Task<RetornoLoginmodel> Login(string email, string senha ,string jwtKey, double jwtExpireMinutes)
         { 
             var user = await _repository.Login(email);
             
@@ -63,7 +63,11 @@ namespace Service.Services.Geral.Ator
             if( hasher.VerifyHashedPassword(user, user?.GetSenha() ?? "", senha ) == PasswordVerificationResult.Failed )
                 throw new BadRequestException("Login e/ou senha incorretos");
 
-            return GenerateToken(user, jwtKey,jwtExpireMinutes);
+            return new RetornoLoginmodel()
+            {
+                Dados = new SessionAppModel(user.Id, user.Email, user.Nome, user.Tipo.Id),
+                Token = GenerateToken(user, jwtKey, jwtExpireMinutes)
+            };
 
         }
 
@@ -117,6 +121,16 @@ namespace Service.Services.Geral.Ator
             model.ApplyTo(domain);
 
             await SaveChangesAsync();
+        }
+
+        public async Task<Usuario> BuscarPorEmail(string email)
+        {
+           var user = await _repository.BuscarPorEmail(email);
+           if(user == null)
+                throw new NotFoundException(MensagemHelper.RegistroNaoEncontrato);
+
+           return user;
+
         }
     }
 }

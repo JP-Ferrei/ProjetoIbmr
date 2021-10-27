@@ -21,8 +21,26 @@ namespace ClinicaDentista.Controllers.Geral.Ator
         {
             _service = service;
         }
-    
-         
-        
+
+        [HttpGet("{email}/email")]
+        public async Task<ActionResult<Usuario>> BuscarPorEmail(string email)
+        {
+            try
+            {
+                var usuario = await _service.BuscarPorEmail(email);
+                return Ok(usuario);
+            }
+            catch (NotFoundException e)
+            {
+                return NotFound();
+            }
+            catch (Exception e)
+            {
+                _logger.LogError("{0} - {1}", e.Message, e.InnerException?.Message);
+
+                return StatusCode(StatusCodes.Status500InternalServerError,
+                    $"{MensagemHelper.AlgumErroOcorreu} {e.Message} - {e.InnerException?.Message}");
+            }
+        }
     }
 }

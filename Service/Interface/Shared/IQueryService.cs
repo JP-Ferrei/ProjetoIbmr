@@ -2,6 +2,7 @@ using System;
 using System.Linq;
 using System.Threading.Tasks;
 using Domain.Interface.Shared;
+using Domain.Model;
 
 namespace Service.Interface.Shared
 {
@@ -15,6 +16,7 @@ namespace Service.Interface.Shared
         IQueryable<TEntity> Get(string include = "");
         IQueryable<TEntity> GetNoInclude();
         Task<TEntity> GetNoInclude(Guid id);
+        SessionAppModel SessionApp { get; }
         
     }
 }

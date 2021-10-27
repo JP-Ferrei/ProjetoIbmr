@@ -25,16 +25,7 @@ namespace Data.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("uuid");
 
-                    b.Property<string>("Descricao")
-                        .IsRequired()
-                        .HasColumnType("text");
-
-                    b.Property<Guid>("EnderecoId")
-                        .HasColumnType("uuid");
-
                     b.HasKey("Id");
-
-                    b.HasIndex("EnderecoId");
 
                     b.ToTable("Armazems");
                 });
@@ -164,9 +155,6 @@ namespace Data.Migrations
                     b.Property<Guid>("DentistaId")
                         .HasColumnType("uuid");
 
-                    b.Property<double>("Preco")
-                        .HasColumnType("double precision");
-
                     b.HasKey("Id");
 
                     b.HasIndex("ClienteId");
@@ -208,7 +196,7 @@ namespace Data.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("uuid");
 
-                    b.Property<Guid?>("ArmazemId")
+                    b.Property<Guid>("ArmazemId")
                         .HasColumnType("uuid");
 
                     b.Property<DateTime>("DataDeAdicao")
@@ -231,6 +219,12 @@ namespace Data.Migrations
                     b.HasKey("Id");
 
                     b.HasIndex("ArmazemId");
+
+                    b.HasIndex("Id")
+                        .IsUnique();
+
+                    b.HasIndex("Nome")
+                        .IsUnique();
 
                     b.ToTable("Produtos");
                 });
@@ -356,17 +350,6 @@ namespace Data.Migrations
                     b.HasDiscriminator().HasValue("Recepcionista");
                 });
 
-            modelBuilder.Entity("Domain.Entities.Armazem", b =>
-                {
-                    b.HasOne("Domain.Entities.Endereco", "Endereco")
-                        .WithMany()
-                        .HasForeignKey("EnderecoId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("Endereco");
-                });
-
             modelBuilder.Entity("Domain.Entities.Ator.Usuario", b =>
                 {
                     b.HasOne("Domain.Entities.Endereco", "Endereco")
@@ -403,9 +386,13 @@ namespace Data.Migrations
 
             modelBuilder.Entity("Domain.Entities.Produto", b =>
                 {
-                    b.HasOne("Domain.Entities.Armazem", null)
+                    b.HasOne("Domain.Entities.Armazem", "Armazem")
                         .WithMany("Produtos")
-                        .HasForeignKey("ArmazemId");
+                        .HasForeignKey("ArmazemId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Armazem");
                 });
 
             modelBuilder.Entity("Domain.Entities.Prontuario.Documento", b =>

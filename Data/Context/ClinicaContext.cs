@@ -1,6 +1,8 @@
+using Data.Interface.Shared;
 using Domain.Entities;
 using Domain.Entities.Ator;
 using Domain.Entities.Prontuario;
+using Domain.Model;
 using Microsoft.EntityFrameworkCore;
 
 namespace Data.Context
@@ -17,17 +19,31 @@ namespace Data.Context
         public DbSet<Armazem> Armazems { get; set; }
         public DbSet<Produto> Produtos { get; set; }
 
-        protected override void OnConfiguring(DbContextOptionsBuilder opt)=> 
-            opt.UseNpgsql("Host=localhost;Port=5432;Pooling=true;Database=ClinicaDentista;User Id=postgres;Password=DB@ccess;");
+        public SessionAppModel SessionApp { get; }
 
+        
+        protected override void OnConfiguring(DbContextOptionsBuilder opt) {
+            opt.UseNpgsql("Host=localhost;Port=5432;Pooling=true;Database=ClinicaDentista;User Id=postgres;Password=DB@ccess;");
+            
+        }
+        
+        // public ClinicaContext(DbContextOptions<ClinicaContext> opt, IIbmrProvider ibmrProvider) : base(opt)
+        // {
+        //     SessionApp = ibmrProvider.SessionApp;
+        // }
         protected override void OnModelCreating(ModelBuilder modelBuilder)
-        {
+        { 
             modelBuilder.Entity<TipoUsuario>().HasData(TipoUsuario.ObterDados());
 
-
+            
+            
             modelBuilder.Entity<Usuario>().HasIndex(x => x.Email).IsUnique();
             modelBuilder.Entity<Usuario>().HasIndex(x => x.Cpf).IsUnique();
             modelBuilder.Entity<Dentista>().HasIndex(x => x.Cro).IsUnique();
+
+            
+            modelBuilder.Entity<Produto>().HasIndex(x => x.Nome).IsUnique();
+            modelBuilder.Entity<Produto>().HasIndex(x => x.Id).IsUnique();
         }
     }
 }

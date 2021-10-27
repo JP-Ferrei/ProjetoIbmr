@@ -26,7 +26,7 @@ namespace ClinicaDentista.Controllers
         
         [HttpPost("usuario")]
         [AllowAnonymous]
-        public async Task<ActionResult<string>> Login([FromBody] LoginModel model)
+        public async Task<ActionResult<RetornoLoginmodel>> Login([FromBody] LoginModel model)
         {
             try
             {

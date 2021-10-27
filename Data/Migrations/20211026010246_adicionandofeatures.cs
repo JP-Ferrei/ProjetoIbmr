@@ -3,7 +3,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 
 namespace Data.Migrations
 {
-    public partial class AdicionandoEntidades : Migration
+    public partial class adicionandofeatures : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
@@ -16,14 +16,6 @@ namespace Data.Migrations
                 name: "senha",
                 table: "Usuarios",
                 newName: "Senha");
-
-            migrationBuilder.AlterColumn<string>(
-                name: "Senha",
-                table: "Usuarios",
-                type: "text",
-                nullable: true,
-                oldClrType: typeof(string),
-                oldType: "text");
 
             migrationBuilder.AddColumn<DateTime>(
                 name: "DataNascimento",
@@ -56,6 +48,23 @@ namespace Data.Migrations
                 type: "uuid",
                 nullable: true);
 
+            migrationBuilder.AddColumn<int>(
+                name: "TipoId",
+                table: "Usuarios",
+                type: "integer",
+                nullable: true);
+
+            migrationBuilder.CreateTable(
+                name: "Armazems",
+                columns: table => new
+                {
+                    Id = table.Column<Guid>(type: "uuid", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Armazems", x => x.Id);
+                });
+
             migrationBuilder.CreateTable(
                 name: "Consultas",
                 columns: table => new
@@ -64,7 +73,7 @@ namespace Data.Migrations
                     DentistaId = table.Column<Guid>(type: "uuid", nullable: false),
                     ClienteId = table.Column<Guid>(type: "uuid", nullable: false),
                     DataHora = table.Column<DateTime>(type: "timestamp without time zone", nullable: false),
-                    Preco = table.Column<double>(type: "double precision", nullable: false)
+                    DataCriacao = table.Column<DateTime>(type: "timestamp without time zone", nullable: false)
                 },
                 constraints: table =>
                 {
@@ -107,6 +116,42 @@ namespace Data.Migrations
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_Prontuarios", x => x.Id);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "TipoUsuario",
+                columns: table => new
+                {
+                    Id = table.Column<int>(type: "integer", nullable: false),
+                    Nome = table.Column<string>(type: "character varying(60)", maxLength: 60, nullable: false),
+                    Role = table.Column<string>(type: "text", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_TipoUsuario", x => x.Id);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "Produtos",
+                columns: table => new
+                {
+                    Id = table.Column<Guid>(type: "uuid", nullable: false),
+                    Nome = table.Column<string>(type: "text", nullable: false),
+                    Quantidade = table.Column<int>(type: "integer", nullable: false),
+                    Validade = table.Column<DateTime>(type: "timestamp without time zone", nullable: false),
+                    Descricao = table.Column<string>(type: "text", nullable: false),
+                    ArmazemId = table.Column<Guid>(type: "uuid", nullable: false),
+                    DataDeAdicao = table.Column<DateTime>(type: "timestamp without time zone", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Produtos", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_Produtos_Armazems_ArmazemId",
+                        column: x => x.ArmazemId,
+                        principalTable: "Armazems",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
                 });
 
             migrationBuilder.CreateTable(
@@ -169,6 +214,35 @@ namespace Data.Migrations
                         onDelete: ReferentialAction.Restrict);
                 });
 
+            migrationBuilder.InsertData(
+                table: "TipoUsuario",
+                columns: new[] { "Id", "Nome", "Role" },
+                values: new object[,]
+                {
+                    { 1, "Administrativo", "Admin" },
+                    { 2, "Dentista", "Dentista" },
+                    { 3, "Cliente", "Cliente" },
+                    { 4, "Recepcionista", "Recepcionista" }
+                });
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Usuarios_Cpf",
+                table: "Usuarios",
+                column: "Cpf",
+                unique: true);
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Usuarios_Cro",
+                table: "Usuarios",
+                column: "Cro",
+                unique: true);
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Usuarios_Email",
+                table: "Usuarios",
+                column: "Email",
+                unique: true);
+
             migrationBuilder.CreateIndex(
                 name: "IX_Usuarios_EnderecoId",
                 table: "Usuarios",
@@ -183,6 +257,11 @@ namespace Data.Migrations
                 name: "IX_Usuarios_ReponsavelId",
                 table: "Usuarios",
                 column: "ReponsavelId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Usuarios_TipoId",
+                table: "Usuarios",
+                column: "TipoId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_Consultas_ClienteId",
@@ -209,6 +288,23 @@ namespace Data.Migrations
                 table: "Perguntastring",
                 column: "ProntuarioId");
 
+            migrationBuilder.CreateIndex(
+                name: "IX_Produtos_ArmazemId",
+                table: "Produtos",
+                column: "ArmazemId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Produtos_Id",
+                table: "Produtos",
+                column: "Id",
+                unique: true);
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Produtos_Nome",
+                table: "Produtos",
+                column: "Nome",
+                unique: true);
+
             migrationBuilder.AddForeignKey(
                 name: "FK_Usuarios_Endereco_EnderecoId",
                 table: "Usuarios",
@@ -222,6 +318,14 @@ namespace Data.Migrations
                 table: "Usuarios",
                 column: "ProntuarioId",
                 principalTable: "Prontuarios",
+                principalColumn: "Id",
+                onDelete: ReferentialAction.Restrict);
+
+            migrationBuilder.AddForeignKey(
+                name: "FK_Usuarios_TipoUsuario_TipoId",
+                table: "Usuarios",
+                column: "TipoId",
+                principalTable: "TipoUsuario",
                 principalColumn: "Id",
                 onDelete: ReferentialAction.Restrict);
 
@@ -245,6 +349,10 @@ namespace Data.Migrations
                 table: "Usuarios");
 
             migrationBuilder.DropForeignKey(
+                name: "FK_Usuarios_TipoUsuario_TipoId",
+                table: "Usuarios");
+
+            migrationBuilder.DropForeignKey(
                 name: "FK_Usuarios_Usuarios_ReponsavelId",
                 table: "Usuarios");
 
@@ -264,7 +372,28 @@ namespace Data.Migrations
                 name: "Perguntastring");
 
             migrationBuilder.DropTable(
+                name: "Produtos");
+
+            migrationBuilder.DropTable(
+                name: "TipoUsuario");
+
+            migrationBuilder.DropTable(
                 name: "Prontuarios");
+
+            migrationBuilder.DropTable(
+                name: "Armazems");
+
+            migrationBuilder.DropIndex(
+                name: "IX_Usuarios_Cpf",
+                table: "Usuarios");
+
+            migrationBuilder.DropIndex(
+                name: "IX_Usuarios_Cro",
+                table: "Usuarios");
+
+            migrationBuilder.DropIndex(
+                name: "IX_Usuarios_Email",
+                table: "Usuarios");
 
             migrationBuilder.DropIndex(
                 name: "IX_Usuarios_EnderecoId",
@@ -276,6 +405,10 @@ namespace Data.Migrations
 
             migrationBuilder.DropIndex(
                 name: "IX_Usuarios_ReponsavelId",
+                table: "Usuarios");
+
+            migrationBuilder.DropIndex(
+                name: "IX_Usuarios_TipoId",
                 table: "Usuarios");
 
             migrationBuilder.DropColumn(
@@ -298,6 +431,10 @@ namespace Data.Migrations
                 name: "ResponsavelId",
                 table: "Usuarios");
 
+            migrationBuilder.DropColumn(
+                name: "TipoId",
+                table: "Usuarios");
+
             migrationBuilder.RenameColumn(
                 name: "Telefone",
                 table: "Usuarios",
@@ -307,16 +444,6 @@ namespace Data.Migrations
                 name: "Senha",
                 table: "Usuarios",
                 newName: "senha");
-
-            migrationBuilder.AlterColumn<string>(
-                name: "senha",
-                table: "Usuarios",
-                type: "text",
-                nullable: false,
-                defaultValue: "",
-                oldClrType: typeof(string),
-                oldType: "text",
-                oldNullable: true);
         }
     }
 }

@@ -9,10 +9,11 @@ namespace Service.Interface.Geral.Ator
     {
         string GenerateToken(Usuario usuario, string jwtKey, double jwtExpireMinutes);
 
-        Task<string> Login(string email, string senha, string jwtKey, double jwtExpireMinutes);
+        Task<RetornoLoginmodel> Login(string email, string senha, string jwtKey, double jwtExpireMinutes);
 
         new Task<Usuario> Post(Usuario usuario);
         bool LoginExistente(Usuario usuario);
         void GerarSenha(Usuario usuario);
+        Task<Usuario> BuscarPorEmail(string email);
     }
 }

@@ -1,35 +1,33 @@
 using System;
 using System.Threading.Tasks;
 using ClinicaDentista.Controllers.Shared;
-using Data.Interface.Geral;
-using Domain.Entities;
+using Domain.Entities.Ator;
 using Framework.Exceptions;
 using Framework.Helpers;
-using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
-using Service.Interface.Geral;
+using Service.Interface.Geral.Ator;
 using Service.Interface.Shared;
 
-namespace ClinicaDentista.Controllers.Geral
+namespace ClinicaDentista.Controllers.Geral.Ator
 {
-    
-    public class ProdutoController: MasterCrudController<Produto>
+    public class ClienteController: MasterCrudController<Cliente>
     {
-        private readonly IProdutoService _service;
-        public ProdutoController(ILogger<MasterCrudController<Produto>> logger, IProdutoService service, string includePatch = "") : base(logger, service, includePatch)
+        private readonly IClienteService _service;
+        public ClienteController(ILogger<MasterCrudController<Cliente>> logger, IClienteService service, string includePatch = "") : base(logger, service, includePatch)
         {
             _service = service;
         }
 
         [HttpPost]
-        public async override Task<ActionResult<Produto>> Post(Produto model)
+        public override async Task<ActionResult<Cliente>> Post(Cliente model)
         {
             try
             {
-                var produto = await _service.Post(model);
-                return Created(string.Empty, produto);
+                await _service.Post(model);
+                model.Senha = "";
+                return Created(string.Empty, model);
             }
             catch (NotFoundException e)
             {

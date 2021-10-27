@@ -2,6 +2,7 @@ using System;
 using System.Linq;
 using System.Threading.Tasks;
 using Domain.Interface.Shared;
+using Domain.Model;
 
 namespace Data.Interface.Shared
 {
@@ -15,6 +16,6 @@ namespace Data.Interface.Shared
         Task<TEntity> GetByIdTrackingNoFilterAsync(Guid id);
         IQueryable<TEntity> GetAll(string include = "");
         IQueryable<TEntity> GetAllNoInclude();
-        
+        SessionAppModel SessionApp { get; }
     }
 }
