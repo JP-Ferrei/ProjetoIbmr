@@ -58,7 +58,13 @@ namespace ClinicaDentista
                 }
             });
             
-            
+            services.AddCors(o => o.AddPolicy("CorsLibera", builder =>
+            {
+                builder
+                    .AllowAnyOrigin()
+                    .AllowAnyMethod()
+                    .AllowAnyHeader();
+            }));
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -72,18 +78,13 @@ namespace ClinicaDentista
             }
             UpdateDatabase(app);
             
+            app.UseCors("CorsLibera");
             app.UseHttpsRedirection();
 
             app.UseRouting();   
             app.UseAuthentication();
             app.UseAuthorization();
 
-            app.UseCors(builder =>
-            {
-                builder.AllowAnyOrigin();
-                builder.AllowAnyHeader();
-                builder.AllowAnyMethod();
-            });
             app.UseEndpoints(endpoints =>
             {
                 endpoints.Select().Filter().OrderBy().Count().MaxTop(null);
