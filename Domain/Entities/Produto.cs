@@ -6,11 +6,14 @@ namespace Domain.Entities
 {
     public class Produto: IEntity
     {
+        
+
         public Guid Id { get; set; }
         public string Nome { get; set; }
         public int Quantidade { get; set; }
         public DateTime Validade { get; set; }
         public string Descricao { get; set; }
+        
         public Guid ArmazemId { get; set; }
         public Armazem? Armazem { get; set; }
         
@@ -20,7 +23,15 @@ namespace Domain.Entities
         {
             DataDeAdicao = DateTime.Now;
         }
-
+        public Produto(string nome, int quantidade, DateTime validade, string descricao, Guid armazemId)
+        {
+            Nome = nome;
+            Quantidade = quantidade;
+            Validade = validade;
+            Descricao = descricao;
+            ArmazemId = armazemId;
+            DataDeAdicao = DateTime.Now;
+        }
         
     }
 }

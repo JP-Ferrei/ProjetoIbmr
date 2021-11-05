@@ -8,8 +8,8 @@ namespace Service.Interface.Geral
 {
     public interface IArmazemService: ICrudService<Armazem>
     {
-        Task AdicionarProduto( Guid id ,Produto produtoId);
-        Task<List<Produto>> GetProdutos(Guid id);
+        Task AdicionarProduto(Produto produtoId);
+        Task<List<Produto>> GetProdutos();
         Task<Armazem> GetFirst();
     }
 }

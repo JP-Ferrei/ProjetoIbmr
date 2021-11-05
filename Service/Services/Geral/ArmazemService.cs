@@ -20,15 +20,15 @@ namespace Service.Services.Geral
             _produtoService = produtoService;
         }
 
-        public async Task AdicionarProduto(Guid id ,Produto produto)
+        public async Task AdicionarProduto(Produto produto)
         {
-            var armazem = await Get(id);
+            var armazem = await GetFirst();
 
             if (armazem == null)
                 throw new NotFoundException(MensagemHelper.RegistroNaoEncontrato);
 
-            if (ChecarSeJaExiste(armazem, produto))
-                return;
+            //if (ChecarSeJaExiste(armazem, produto))
+            //    return;
                         
             var x = await _produtoService.Post(produto);
                 
@@ -50,9 +50,9 @@ namespace Service.Services.Geral
             return false;
         }
 
-        public async Task<List<Produto>> GetProdutos(Guid id)
+        public async Task<List<Produto>> GetProdutos()
         {
-            var armazem =  await Get(id);
+            var armazem =  await GetFirst();
             if (armazem == null)
                 throw new NotFoundException(MensagemHelper.RegistroNaoEncontrato);
             return armazem.Produtos.ToList();
@@ -63,7 +63,6 @@ namespace Service.Services.Geral
             var armazem = await _repository.GetFirst();
 
             if (armazem != null) return armazem;
-            
             
             var arma = new Armazem();
             await Post(arma);

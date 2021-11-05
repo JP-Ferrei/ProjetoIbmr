@@ -14,7 +14,7 @@ using Service.Interface.Shared;
 
 namespace ClinicaDentista.Controllers.Geral
 {
-    [Authorize(Roles = "Recepcionista")]
+    [Authorize(Roles = "Recepcionista,Admin")]
     public class ArmazemController: MasterCrudController<Armazem>
     {
         private readonly IArmazemService _service;
@@ -24,12 +24,12 @@ namespace ClinicaDentista.Controllers.Geral
             _service = service;
         }
          
-        [HttpPost("{id}/AdicionarProduto")]
-        public async Task<IActionResult> AdicionarProduto(Guid id , [FromBody] Produto produto)
+        [HttpPost("AdicionarProduto")]
+        public async Task<IActionResult> AdicionarProduto([FromBody] Produto produto)
         {
             try
             {
-                _service.AdicionarProduto(id, produto);
+               await _service.AdicionarProduto(produto);
                 return NoContent();
             }
             catch (NotFoundException e)
@@ -45,12 +45,12 @@ namespace ClinicaDentista.Controllers.Geral
             }
         }
 
-        [HttpGet("{id}/Produtos")]
-        public async Task<ActionResult<List<Produto>>> GetProdutos(Guid id)
+        [HttpGet("Produtos")]
+        public async Task<ActionResult<List<Produto>>> GetProdutos()
         {
             try
             {
-                var produtos = await _service.GetProdutos(id);
+                var produtos = await _service.GetProdutos();
                 return Ok(produtos);
             }
             catch (NotFoundException e)

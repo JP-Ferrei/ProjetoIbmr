@@ -27,6 +27,15 @@ namespace Domain.Entities
         {
             DataCriacao = DateTime.Now;
         }
+
+        public Consulta(Guid dentistaId, Guid clienteId, DateTime dataHora)
+        {
+            DentistaId = dentistaId;
+            ClienteId = clienteId;
+            DataHora = dataHora;
+            DataCriacao = DateTime.Now;
+
+        }
     }
 
     

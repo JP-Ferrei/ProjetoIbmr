@@ -23,7 +23,8 @@ namespace Data.Context
         public SessionAppModel SessionApp { get; }
 
         
-        protected override void OnConfiguring(DbContextOptionsBuilder opt)
+      
+        protected override void OnConfiguring(DbContextOptionsBuilder opt = null)
         {
             if (opt.IsConfigured) return; 
                 opt.UseNpgsql("Host=localhost;Port=5432;Pooling=true;Database=ClinicaDentista;User Id=postgres;Password=DB@ccess;");
@@ -34,8 +35,7 @@ namespace Data.Context
         {
             SessionApp = ibmrProvider.SessionApp;
         }
-
-        public ClinicaContext(DbContextOptions opt): base(opt)
+        public ClinicaContext(DbContextOptions<ClinicaContext> opt): base(opt)
         {
             
         }

@@ -16,6 +16,7 @@ namespace Service.Services.Geral
         public override async Task<Produto> Post(Produto model)
         {
             var produto = await _repository.GetProdutoByNome(model.Nome);
+            
 
             if (produto == null)
             {

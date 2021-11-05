@@ -22,10 +22,10 @@ namespace Service.Services.Geral
             _dentistaService = dentistaService;
         }
 
-        public async override Task<Consulta> Post(Consulta model)
+        public override async Task<Consulta> Post(Consulta model)
         {
-            using (var transaction = _repository.BeginTransaction())
-            {
+           // using (var transaction = _repository.BeginTransaction())
+            //{
                 var cliente = await _clienteService.Get(model.ClienteId);
                 if (cliente == null)
                     throw new NotFoundException(MensagemHelper.RegistroNaoEncontrato);
@@ -37,10 +37,10 @@ namespace Service.Services.Geral
                 await base.Post(model);
 
                 await _repository.SaveChangesAsync();
-                transaction.Commit();
+              //  transaction.Commit();
 
                 return model;
-            }
+            //}
         }
     }
 

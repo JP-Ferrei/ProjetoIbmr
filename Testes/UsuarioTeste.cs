@@ -23,7 +23,7 @@ namespace Testes
         
         public UsuarioTeste()
         {
-            var opt = new DbContextOptionsBuilder().UseInMemoryDatabase("ClinicaTeste").Options;
+            var opt = new DbContextOptionsBuilder<ClinicaContext>().UseInMemoryDatabase("ClinicaTeste").Options;
 
             _context = new ClinicaContext(opt);
             _repo = new UsuarioRepository(_context);

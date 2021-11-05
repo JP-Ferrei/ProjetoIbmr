@@ -20,8 +20,8 @@ namespace Service.Services.Geral.Ator
         
         public override async Task Post(Cliente model)
         {
-            using (var transaction = _repository.BeginTransaction())
-            {
+            // using (var transaction = _repository.BeginTransaction())
+            // {
                     
                 if( string.IsNullOrEmpty(model.GetSenha()) )
                     throw new BadRequestException("Informe uma senha válida!");
@@ -40,8 +40,8 @@ namespace Service.Services.Geral.Ator
                 user.TipoId = 3;
 
                 await _repository.SaveChangesAsync();
-                transaction.Commit();
-            }
+            //     transaction.Commit();
+            // }
         }
     }
 }

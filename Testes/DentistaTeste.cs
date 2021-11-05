@@ -26,7 +26,7 @@ namespace Testes
         
         public DentistaTeste()
         {
-            var opt = new DbContextOptionsBuilder().UseInMemoryDatabase("ClinicaTeste").Options;
+            var opt = new DbContextOptionsBuilder<ClinicaContext>().UseInMemoryDatabase("ClinicaTeste").Options;
 
             _context = new ClinicaContext(opt);
 
