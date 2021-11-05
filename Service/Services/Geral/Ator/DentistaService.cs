@@ -8,9 +8,10 @@ using Service.Services.Shared;
 
 namespace Service.Services.Geral.Ator
 {
-    public class DentistaService:CrudService<Dentista, IDentistaRepository>, IDentistaService
+    public class DentistaService : CrudService<Dentista, IDentistaRepository>, IDentistaService
     {
         private readonly IUsuarioService _usuarioService;
+
         public DentistaService(IDentistaRepository repository, IUsuarioService service) : base(repository)
         {
             _usuarioService = service;
@@ -18,28 +19,23 @@ namespace Service.Services.Geral.Ator
 
         public override async Task Post(Dentista model)
         {
-            using (var transaction = _repository.BeginTransaction())
+            if (string.IsNullOrEmpty(model.GetSenha()))
+                throw new BadRequestException("Informe uma senha válida!");
+
+            if (_usuarioService.LoginExistente(model))
             {
-                    
-                if( string.IsNullOrEmpty(model.GetSenha()) )
-                    throw new BadRequestException("Informe uma senha válida!");
-                
-                if( _usuarioService.LoginExistente(model) )
-                {
-                    throw new BadRequestException("Já existe um usuário utilizando esse login");
-                }
-                
-                _usuarioService.GerarSenha(model);
-                
-                await base.Post(model);
-
-                var user = await _usuarioService.GetTracking(model.Id);
-
-                user.TipoId = 2;
-
-                await _repository.SaveChangesAsync();
-                transaction.Commit();
+                throw new BadRequestException("Já existe um usuário utilizando esse login");
             }
+
+            _usuarioService.GerarSenha(model);
+
+            await base.Post(model);
+
+            var user = await _usuarioService.GetTracking(model.Id);
+
+            user.TipoId = 2;
+
+            await _repository.SaveChangesAsync();
         }
     }
 }

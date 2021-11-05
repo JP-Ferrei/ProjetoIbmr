@@ -23,14 +23,21 @@ namespace Data.Context
         public SessionAppModel SessionApp { get; }
 
         
-        protected override void OnConfiguring(DbContextOptionsBuilder opt) {
-            opt.UseNpgsql("Host=localhost;Port=5432;Pooling=true;Database=ClinicaDentista;User Id=postgres;Password=DB@ccess;");
+        protected override void OnConfiguring(DbContextOptionsBuilder opt)
+        {
+            if (opt.IsConfigured) return; 
+                opt.UseNpgsql("Host=localhost;Port=5432;Pooling=true;Database=ClinicaDentista;User Id=postgres;Password=DB@ccess;");
             
         }
         
         public ClinicaContext(DbContextOptions<ClinicaContext> opt, IIbmrProvider ibmrProvider) : base(opt)
         {
             SessionApp = ibmrProvider.SessionApp;
+        }
+
+        public ClinicaContext(DbContextOptions opt): base(opt)
+        {
+            
         }
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {

@@ -30,6 +30,18 @@ namespace Domain.Entities.Ator
             DataCriacao = DateTime.Now;
         }
 
+        public Usuario( string nome, string senha ,bool ativo, string email, string telefone, DateTime dataNascimento)
+        {
+            Id = Guid.NewGuid();
+            Nome = nome;
+            DataCriacao = DateTime.Now;
+            Ativo = ativo;
+            Email = email;
+            Telefone = telefone;
+            DataNascimento = dataNascimento;
+            _senha = senha;
+
+        }
 
         public string GetSenha()
         {

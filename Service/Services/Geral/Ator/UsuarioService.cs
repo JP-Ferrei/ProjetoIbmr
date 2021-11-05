@@ -75,8 +75,6 @@ namespace Service.Services.Geral.Ator
         {
             var hasher = new PasswordHasher<Usuario>();
             usuario.Senha = hasher.HashPassword(usuario, usuario.GetSenha());
-
-            
         }
 
         private bool VerificaSenha(Usuario usuario, string senha)
