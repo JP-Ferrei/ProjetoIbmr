@@ -1,0 +1,46 @@
+produto
+ INSERT INTO "Produtos" ("Id", "ArmazemId", "DataDeAdicao", "Descricao", "Nome", "Quantidade", "Validade")
+      VALUES (a3fa262e-ade7-4ed5-be05-e4a70b768283, 74242b55-4e16-4003-a309-50c38bb0c630, 2021-12-13 17:29:07.769872, luvas, Luvas, 32,2021-12-10 00:00:00);
+
+ SELECT p."Id", p."ArmazemId", p."DataDeAdicao", p."Descricao", p."Nome", p."Quantidade", p."Validade"
+      FROM "Produtos" AS p
+      WHERE p.id == id
+
+ DELETE FROM "Produtos" AS p where p."id" = 'a3fa262e-ade7-4ed5-be05-e4a70b768283'
+	  
+
+
+cliente
+
+INSERT INTO public."Usuarios"(
+	"Id", "Nome", "Cpf", "Senha", "DataCriacao", "Ativo", "Email", "ResponsavelId" "Telefone", "Discriminator", "Cro", "DataNascimento", "EnderecoId", "ResponsavelId", "TipoId")
+	VALUES (2408f2f6-c9ee-49c0-9774-90646e1d5bcb, Fabricio, 1234123145, senha, 2021-11-24 18:54:15.070157, true, fabricio@mail.com,null, 1234123414, Cliente, null, 1995-08-24 00:00:00, null, null, 3);
+
+SELECT "Id", "Nome", "Cpf", "Senha", "DataCriacao", "Ativo", "Email", "Telefone", "Discriminator", "Cro", "DataNascimento", "EnderecoId", "ResponsavelId", "TipoId"
+	FROM public."Usuarios";
+
+ DELETE FROM "Usuarios" AS u where u."id" = '2408f2f6-c9ee-49c0-9774-90646e1d5bcb'
+
+
+dentista
+
+INSERT INTO public."Usuarios"(
+	"Id", "Nome", "Cpf", "Senha", "DataCriacao", "Ativo", "Email", "ResponsavelId" "Telefone", "Discriminator", "Cro", "DataNascimento", "EnderecoId", "ResponsavelId", "TipoId")
+	VALUES (b49866bc-09f0-4930-a13b-9c3a36799640, Marcio, 123-123-432.12 , senha, 2021-12-13 17:58:00.030278, true, Marcio@mail.com,null, 21 98473-8324, Dentista, 12343, 2021-12-23 00:00:00, null, null, 2);
+
+SELECT "Id", "Nome", "Cpf", "Senha", "DataCriacao", "Ativo", "Email", "Telefone", "Discriminator", "Cro", "DataNascimento", "EnderecoId", "ResponsavelId", "TipoId"
+	FROM public."Usuarios";
+
+ DELETE FROM "Usuarios" AS u where u."id" = 'b49866bc-09f0-4930-a13b-9c3a36799640'
+
+
+consulta
+
+INSERT INTO public."Consultas"(
+	"Id", "DentistaId", "ClienteId", "DataHora", "DataCriacao")
+	VALUES (bc6e8ac9-cdf6-4a4d-b3cb-1ba6d6cc0e7c, b49866bc-09f0-4930-a13b-9c3a36799640, 2408f2f6-c9ee-49c0-9774-90646e1d5bcb, 2022-01-22 18:25:00, 2021-12-13 18:01:13.478072);
+
+SELECT "Id", "DentistaId", "ClienteId", "DataHora", "DataCriacao"
+	FROM public."Consultas";
+
+DELETE FROM "Consultas" AS c where c."id" = 'bc6e8ac9-cdf6-4a4d-b3cb-1ba6d6cc0e7c'
